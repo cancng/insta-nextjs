@@ -2,112 +2,128 @@ import Layout from '../components/Layout';
 import {
   Container,
   Row,
-  InputGroup,
   Button,
-  FormControl,
   Col,
-  Form,
+  Card,
+  CardDeck,
+  Jumbotron,
 } from 'react-bootstrap';
 import Link from 'next/link';
-import { useState } from 'react';
+import { RiSearchEyeLine } from 'react-icons/ri';
 
-export default function Index() {
-  const [users, setUsers] = useState(null);
-  const [username, setUsername] = useState('');
-
-  const onSubmit = async (e) => {
-    const response = await fetch(
-      `https://test-instapi.herokuapp.com/api/common/search/${username}/user`
-    );
-    const data = await response.json();
-    setUsers(data);
-    console.log(data);
-  };
-
+const Index = ({ followings }) => {
+  console.log(followings);
   return (
     <Layout>
-      <Container>
-        <Row>
-          <h2>Lorem ipsum</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti
-            dicta dignissimos fugit incidunt, inventore nostrum totam unde
-            voluptatibus? Amet beatae cum dignissimos dolore ex laboriosam odio
-            officia quae repellendus rerum!
+      <Container className='mb-4'>
+        <Jumbotron style={{ padding: '4rem 2rem 1.5rem 2rem' }}>
+          <h1 className='display-4'>Instagram Görüntüleyici</h1>
+          <p className='lead'>
+            Üye olmadan Instagram'da kolayca gezinin. Bu sayfada seçtiğimiz
+            görseller görüntülenmektedir.
           </p>
-          <Form className='w-100'>
-            <InputGroup className='mb-3'>
-              <InputGroup.Prepend>
-                <InputGroup.Text>@</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                placeholder='Instagram username'
-                aria-label='Instagram username'
-                aria-describedby='basic-addon2'
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
+          <hr className='my-4' />
+          <p>
+            Aşağıdaki butondan profillere, hashtaglere veya istediğiniz yerlere
+            bakabilirsiniz.
+          </p>
+          <Link href='/search'>
+            <a className='btn btn-warning'>
+              Göz Atın <RiSearchEyeLine />
+            </a>
+          </Link>
+        </Jumbotron>
+
+        <CardDeck>
+          <Card>
+            <div className='text-center mt-2'>
+              <Card.Img variant='top' src='heart.png' style={{ width: 64 }} />
+            </div>
+            <Card.Body className='text-center'>
+              <Card.Title>Takip Edin</Card.Title>
+              <Card.Text>
+                Sevdiğiniz Instagram profillerini rahatça gezin ve bunu giriş
+                yapmaya gerek kalmadan yapın.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <div className='text-center mt-2'>
+              <Card.Img variant='top' src='picture.png' style={{ width: 64 }} />
+            </div>
+            <Card.Body className='text-center'>
+              <Card.Title>Instagram Trendleri</Card.Title>
+              <Card.Text>
+                Instagram trendlerini tek bir yerden keşfedin.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <div className='text-center mt-2'>
+              <Card.Img
+                variant='top'
+                src='detective.png'
+                style={{ width: 64 }}
               />
-              <InputGroup.Append>
-                <Button variant='outline-secondary' onClick={onSubmit}>
-                  Kullanıcı ara
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-        </Row>
-        {users && (
-          <Row>
-            <Col>
-              <h2>Sonuçlar</h2>
-              {users.users.map((user) => (
-                <div className='profile-result'>
-                  <Link href={`/profile/${user.user.username}`}>
-                    <a>
-                      <div className='result-ava'>
-                        <img
-                          src={user.user.profile_pic_url}
-                          alt={user.user.username}
-                        />
-                      </div>
-                      <div className='result-username'>
-                        @{user.user.username}
-                      </div>
-                    </a>
-                  </Link>
-                </div>
-              ))}
+            </div>
+            <Card.Body className='text-center'>
+              <Card.Title>Göz Atın</Card.Title>
+              <Card.Text>
+                Instagram hesabınıza giriş yapmadan istediğiniz kadar gizlice
+                göz atın.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </CardDeck>
+        <Row className='mt-2'>
+          <Col md='12' className='mb-4 mt-4'>
+            <h2 className='text-center'>Seçtiğimiz Profiller</h2>
+          </Col>
+          {followings.data.map((following) => (
+            <Col md={3} sm={12} style={{ padding: 0 }}>
+              <Link href={`/profile/${following.username}`}>
+                <a>
+                  <Card
+                    className='w-50 mb-3 mx-auto'
+                    style={{ border: 'none' }}
+                  >
+                    <Card.Img
+                      variant='top'
+                      src={following.profile_pic_url}
+                      className='rounded-circle'
+                    />
+                    <Card.Body>
+                      <Card.Text className='text-center'>
+                        @{following.username.substr(0, 4)}..
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </a>
+              </Link>
             </Col>
-          </Row>
-        )}
+          ))}
+        </Row>
       </Container>
-      <style jsx>
-        {`
-          .profile-result {
-            width: 150px;
-            margin: 0 8px 35px;
-            text-align: center;
-            display: inline-block;
-            vertical-align: top;
-          }
-          .result-ava {
-            width: 65px;
-            height: 65px;
-            background-color: rgba(255, 91, 38, 0.96);
-            overflow: hidden;
-            -webkit-border-radius: 100%;
-            border-radius: 100%;
-            display: inline-block;
-            //margin-bottom: 20px;
-          }
-          .result-username {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #222222;
-            font-size: 24px;
-          }
-        `}
-      </style>
     </Layout>
   );
+};
+
+export async function getServerSideProps() {
+  let followings = {};
+  try {
+    const response = await fetch(`${process.env.API_URL}/users/user/me`);
+    const data = await response.json();
+    console.log(data.following);
+    followings = data.following;
+  } catch (err) {
+    console.log(err.message);
+    followings = {};
+  }
+  return {
+    props: {
+      followings,
+    },
+  };
 }
+
+export default Index;

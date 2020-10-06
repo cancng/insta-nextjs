@@ -22,12 +22,13 @@ const Layout = ({ children, title, description }) => {
   return (
     <div>
       <Head>
-        <title>{title || 'Instagram Viewer'}</title>
+        <title>{title || 'Instagram Görüntüleyici'}</title>
         <meta
           name='description'
           content={
             description ||
-            'Anonymously stalk Instagram profiles and stories with the best Instagram Viewer. With Instagram Online Viewer discover the most popular Instagram photos and videos.'
+            "Instagram hikayeleri, profilleri, takipçileri ve takip edilenleri Instagram'a" +
+              ' giriş yapmaya gerek kalmadan keşfetmeye başlayın.'
           }
         />
       </Head>

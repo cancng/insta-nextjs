@@ -17,6 +17,9 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse>
           <Nav>
+            <Link href='/search'>
+              <a className='nav-link'>Arama</a>
+            </Link>
             <Link href='/deneme'>
               <a className='nav-link'>Deneme</a>
             </Link>

@@ -79,13 +79,20 @@ const User = ({ user }) => {
           {user.photos.edges.map((post) => (
             <Col md={4} xs={12}>
               <Card className='mb-3' style={{ width: '18rem' }}>
-                <Card.Img variant='top' src={post.node.display_url} />
+                <Card.Img
+                  variant='top'
+                  src={post.node.display_url}
+                  style={{ height: '240px' }}
+                />
                 <Card.Body>
                   <Card.Title>
                     {post.node.__typename === 'GraphVideo' ? 'VIDEO' : 'IMG'}
                   </Card.Title>
                   <Card.Text>
-                    {post.node.edge_media_to_caption.edges[0].node.text}
+                    {post.node.edge_media_to_caption.edges[0].node.text.substr(
+                      0,
+                      175
+                    )}...
                   </Card.Text>
                   {/*<Button variant='primary'>Go somewhere</Button>*/}
                 </Card.Body>
@@ -124,9 +131,7 @@ export async function getServerSideProps(context) {
   let user = null;
   const { username } = context.query;
   try {
-    const response = await fetch(
-      `https://test-instapi.herokuapp.com/api/users/${username}`
-    );
+    const response = await fetch(`${process.env.API_URL}/users/${username}`);
     user = await response.json();
   } catch (err) {
     console.log(err.message);
