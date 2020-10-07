@@ -85,7 +85,6 @@ export async function getServerSideProps(context) {
   try {
     const response = await fetch(`${process.env.API_URL}/hashtag/${hashtag}`);
     hashtagData = await response.json();
-    // console.log(response)
   } catch (err) {
     console.log(err.message);
     hashtagData = null;

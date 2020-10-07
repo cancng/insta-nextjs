@@ -4,17 +4,17 @@ import NProgress from 'nprogress';
 import NavBar from './NavBar';
 
 Router.events.on('routeChangeStart', (url) => {
-  console.log('route değişimi başladı');
+  // console.log('route değişimi başladı');
   NProgress.start();
 });
 
 Router.events.on('routeChangeComplete', () => {
-  console.log('route değişimi bitti');
+  // console.log('route değişimi bitti');
   NProgress.done();
 });
 
 Router.events.on('routeChangeError', () => {
-  console.log('route değişiminde hata');
+  // console.log('route değişiminde hata');
   NProgress.done();
 });
 

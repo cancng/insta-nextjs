@@ -12,6 +12,7 @@ import {
 import parse from 'html-react-parser';
 import { BsLockFill } from 'react-icons/bs';
 import Error from 'next/error';
+import Post from '../../components/Post';
 
 const User = ({ user }) => {
   if (!user) {
@@ -76,29 +77,7 @@ const User = ({ user }) => {
               </Alert>
             </Col>
           )}
-          {user.photos.edges.map((post) => (
-            <Col md={4} xs={12}>
-              <Card className='mb-3' style={{ width: '18rem' }}>
-                <Card.Img
-                  variant='top'
-                  src={post.node.display_url}
-                  style={{ height: '240px' }}
-                />
-                <Card.Body>
-                  <Card.Title>
-                    {post.node.__typename === 'GraphVideo' ? 'VIDEO' : 'IMG'}
-                  </Card.Title>
-                  <Card.Text>
-                    {post.node.edge_media_to_caption.edges[0].node.text.substr(
-                      0,
-                      175
-                    )}...
-                  </Card.Text>
-                  {/*<Button variant='primary'>Go somewhere</Button>*/}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+          <Post photos={user.photos} />
         </Row>
       </Container>
       <style jsx>{`

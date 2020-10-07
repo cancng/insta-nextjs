@@ -2,7 +2,6 @@ import Layout from '../components/Layout';
 import {
   Container,
   Row,
-  Button,
   Col,
   Card,
   CardDeck,
@@ -12,7 +11,6 @@ import Link from 'next/link';
 import { RiSearchEyeLine } from 'react-icons/ri';
 
 const Index = ({ followings }) => {
-  console.log(followings);
   return (
     <Layout>
       <Container className='mb-4'>
@@ -80,7 +78,7 @@ const Index = ({ followings }) => {
             <h2 className='text-center'>Seçtiğimiz Profiller</h2>
           </Col>
           {followings.data.map((following) => (
-            <Col md={3} sm={12} style={{ padding: 0 }}>
+            <Col md={3} sm={12} style={{ padding: 0 }} key={following.id}>
               <Link href={`/profile/${following.username}`}>
                 <a>
                   <Card
