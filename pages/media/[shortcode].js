@@ -1,13 +1,20 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import { Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import {
+  Card,
+  Carousel,
+  Col,
+  Container,
+  ListGroup,
+  Row,
+} from 'react-bootstrap';
 import { FaClock, FaComment, FaHeart, FaThumbsUp } from 'react-icons/fa';
 import Link from 'next/link';
 import Moment from 'react-moment';
 import 'moment/locale/tr';
 
 const Shortcode = ({ media }) => {
-  // console.log(media);
+  console.log(media);
   return (
     <Layout
       title={`${media.owner.full_name} Instagramda: ${media.edge_media_to_caption.edges[0].node.text}`}
@@ -40,12 +47,27 @@ const Shortcode = ({ media }) => {
         <Row>
           <Col md={{ span: '6', offset: '3' }}>
             <Card>
-              {media.__typename === 'GraphSidecar' ? (
-                <Card.Img variant='top' src={media.display_url} />
-              ) : (
-                <video src={ media.video_url } controls/>
-              )}
-
+              <Carousel>
+                {media.__typename === 'GraphSidecar' ? (
+                  media.edge_sidecar_to_children.edges.map((sidecarMedia) =>
+                    sidecarMedia.node.__typename === 'GraphImage' ? (
+                      <Carousel.Item>
+                        <img
+                          className='d-block w-100'
+                          src={sidecarMedia.node.display_url}
+                          alt='First slide'
+                        />
+                      </Carousel.Item>
+                    ) : (
+                      <video src={sidecarMedia.node.video_url} controls />
+                    )
+                  )
+                ) : media.__typename === 'GraphImage' ? (
+                  <Card.Img variant='top' src={media.display_url} />
+                ) : (
+                  <video src={media.video_url} controls />
+                )}
+              </Carousel>
               <Card.Body>
                 <Card.Title>@{media.owner.username}</Card.Title>
                 <Card.Text>
@@ -76,7 +98,9 @@ const Shortcode = ({ media }) => {
                             {comment.node.edge_liked_by.count}
                           </span>
                         </div>
-                        <div className='overflow-hidden'>{comment.node.text}</div>
+                        <div className='overflow-hidden'>
+                          {comment.node.text}
+                        </div>
                       </div>
                     </ListGroup.Item>
                   ))}

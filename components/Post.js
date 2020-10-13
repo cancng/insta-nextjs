@@ -5,11 +5,11 @@ import Moment from 'react-moment';
 import 'moment/locale/tr';
 
 const Post = ({ photos }) => {
-  // console.log('PHOTOS:: ', photos);
+  console.log('PHOTOS:: ', photos);
   return (
     <>
       {photos.edges.map((post) => (
-        <Col md={4} xs={12} key={post.id}>
+        <Col md={4} xs={12} key={post.node.id}>
           <Link href={`/media/${post.node.shortcode}`}>
             <a className='text-decoration-none'>
               <Card className='mb-3'>
@@ -20,7 +20,7 @@ const Post = ({ photos }) => {
                 />
                 <Card.Body>
                   <Card.Title>
-                    {post.node.__typename === 'GraphVideo' ? 'VIDEO' : 'IMG'}
+                    {post.node.__typename}
                     <br />
                     {post.node.shortcode}
                   </Card.Title>
