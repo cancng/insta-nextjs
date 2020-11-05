@@ -11,7 +11,7 @@ import {
   Dropdown,
   Alert,
 } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AiOutlineSearch, AiOutlineArrowRight } from 'react-icons/ai';
 import SearchResults from '../components/SearchResults';
 
@@ -24,23 +24,8 @@ const INITIAL_ALERT = {
 export default function Search() {
   const [data, setData] = useState(null);
   const [searchValue, setSearchValue] = useState('');
-  const [type, setType] = useState('user');
   const [typeShow, setTypeShow] = useState('');
   const [alertMsg, setAlertMsg] = useState(INITIAL_ALERT);
-
-  useEffect(() => {
-    switch (type) {
-      case 'user':
-        setTypeShow('Kullanıcı');
-        break;
-      case 'hashtag':
-        setTypeShow('Hashtag');
-        break;
-      case 'place':
-        setTypeShow('Yerler');
-        break;
-    }
-  }, [type]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +38,7 @@ export default function Search() {
       return;
     }
     const response = await fetch(
-      `${process.env.API_URL}/common/search/${searchValue}/${type}`
+      `${process.env.API_URL}/common/search/${searchValue}`
     );
     setAlertMsg(INITIAL_ALERT);
     const data = await response.json();
@@ -95,22 +80,7 @@ export default function Search() {
                   value={searchValue}
                   onChange={(event) => setSearchValue(event.target.value)}
                 />
-                <DropdownButton
-                  as={InputGroup.Append}
-                  variant='outline-secondary'
-                  title={typeShow}
-                  id='input-group-dropdown-2'
-                >
-                  <Dropdown.Item onSelect={() => setType('user')}>
-                    Kullanıcı
-                  </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => setType('hashtag')}>
-                    Hashtag
-                  </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => setType('place')}>
-                    Yer
-                  </Dropdown.Item>
-                </DropdownButton>
+
                 <InputGroup.Append>
                   <Button variant='outline-success' type='submit'>
                     Ara
@@ -120,7 +90,7 @@ export default function Search() {
             </Form>
           </Col>
         </Row>
-        {data && <SearchResults data={data} type={type} />}
+        {data && <SearchResults data={data} />}
       </Container>
     </Layout>
   );

@@ -5,7 +5,7 @@ import Moment from 'react-moment';
 import 'moment/locale/tr';
 
 const Post = ({ photos }) => {
-  console.log('PHOTOS:: ', photos);
+  // console.log('PHOTOS:: ', photos);
   return (
     <>
       {photos.edges.map((post) => (
